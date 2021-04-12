@@ -1,0 +1,17 @@
+{
+  "name": "server",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "ts-node Projeto/server/src/server.ts",
+    "knex:seed": "knex --knexfile Projeto/server/src/database/knexfile.ts seed:run",
+    "knex:migrate": "knex --knexfile Projeto/server/knexfile.ts migrate:latest"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "typescript": "^4.2.3"
+  }
+}

@@ -1,0 +1,8 @@
+import { Knex } from 'knex';
+
+export async function seed(knex: Knex){
+    await knex('parada').insert([
+        {latitude: 321,
+        longitude: 123 }
+    ]);
+}

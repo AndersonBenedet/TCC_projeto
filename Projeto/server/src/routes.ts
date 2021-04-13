@@ -12,6 +12,7 @@ routes.get('/', (request, response) => {
 })
 
 routes.get('/linhas', linhascontroller.index);
+routes.get('/linhas/:rua', linhascontroller.buscarRua);
 routes.post('/parada', paradascontroller.create);
 routes.post('/parada', paradascontroller.index);
 routes.get('/parada/:id', paradascontroller.show);

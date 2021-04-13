@@ -1,16 +1,24 @@
 import React, {useEffect, useState} from 'react';
 import { MapContainer, TileLayer, Marker, useMapEvents, Popup } from 'react-leaflet';
 import api from '../../services/api';
-import NodeGeocoder from 'node-geocoder'
 
 interface Parada{
     id: number,
     latitude: number,
-    longitude: number
+    longitude: number,
+    rua: string
+}
+
+interface linhas{
+    Nome: string,
+    Numero: number,
+    Rua: string,
+    id: number
 }
 
 const Home = () => {
     const [paradas, setParadas] = useState<Parada[]> ([]);
+    const [linha, setLinha] = useState([]);
     const [error, setError] = useState();
 
     useEffect(() => {
@@ -22,11 +30,18 @@ const Home = () => {
         })
     }, [])
 
-    //const geocoder = NodeGeocoder();
+    async function BuscaLinhas(rua: string){
+        await useEffect(() => {
+            api.get('linhas/' + rua).then(response =>{
+                setLinha(response.data.linhas);
+            })
+            .catch((err) => {
+              setError(err);
+            })
+        }, [])
+    }
 
-    //const res = geocoder.reverse({ lat: 45.767, lon: 4.833 });
-
-    //console.log(res);
+    BuscaLinhas('Rua Visconde de Cairu');
 
     return (
         <div id="Home">
@@ -42,8 +57,12 @@ const Home = () => {
                  {paradas.map((item: Parada) => (
                     <Marker key={item.id} position={[item.latitude, item.longitude]} >
                         <Popup>
-                            
-                            A pretty CSS3 popup. <br /> Easily customizable.
+                            {linha.map((li: linhas) => (
+                                <div key={li.id} >
+                                    <a href={"linha/"+li.Rua}>{li.Numero}</a>
+                                    <br />
+                                </div>
+                            ))}
                         </Popup>
                     </Marker>
                  ))}

@@ -5,14 +5,16 @@ class paradasController {
     async create (request: Request, response: Response) {
         const {
             latitude,
-            longitude
+            longitude,
+            rua
         } = request.body;
     
         const trx = await knex.transaction();
     
         const ids = await trx('parada').insert({
             latitude, 
-            longitude
+            longitude,
+            rua
         });
     
         await trx.commit();

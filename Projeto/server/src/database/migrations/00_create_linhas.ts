@@ -20,6 +20,7 @@ exports.up = function (knex: Knex) {
                         table.increments('id').primary();
                         table.string('Nome').notNullable();
                         table.integer('Numero').notNullable();
+                        table.text('Rua').notNullable()
                     })
             }
         });

@@ -7,6 +7,7 @@ export async function up(knex: Knex) {
         table.increments('id').primary();
         table.decimal('latitude').notNullable();
         table.decimal('longitude').notNullable();
+        table.string('rua').notNullable();
     })
 }
 

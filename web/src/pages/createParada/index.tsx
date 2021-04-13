@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {Link, useHistory} from 'react-router-dom';
 import { MapContainer, TileLayer, Marker, useMapEvents } from 'react-leaflet';
 import api from '../../services/api';
+import axios from 'axios';
 
 interface Parada{
     id: number,
@@ -9,11 +10,23 @@ interface Parada{
     longitude: number
 }
 
+interface Adress{
+    address: 
+        {
+            road: '', 
+            suburb: '', 
+            city: ''
+        }
+    category: '',
+    name: ''
+}
+
 const CreateParada = () => {
     const [AreaSelecionada, setAreaSelecionada] = useState<[number, number]>([0, 0]);
     const [AreaInicial, setAreaInicial] = useState<[number, number]>([0, 0]);
     const [paradas, setParadas] = useState<Parada[]> ([]);
     const [error, setError] = useState();
+    const [ruas, setRuas] = useState<Adress> ();
     const history = useHistory();
     
     useEffect(() => {
@@ -21,7 +34,6 @@ const CreateParada = () => {
             const {latitude, longitude} = position.coords;
 
             setAreaInicial([latitude, longitude])
-            console.log(AreaInicial[1])
         })
     }, [])
 
@@ -34,6 +46,19 @@ const CreateParada = () => {
         })
     }, [])
 
+    async function getEndereco(lat: number, lon: number) {
+		const apiNominatim = axios.create({
+			baseURL: 'https://nominatim.openstreetmap.org'
+		})
+
+		await apiNominatim.get(`/reverse?format=jsonv2&lat=${lat}6&lon=${lon}`).then(response =>{
+			setRuas(response.data);
+		})
+		.catch((err) => {
+			return(err);
+		})
+	}
+
     function Markers(){
         const map = useMapEvents({
             click(e) {
@@ -42,6 +67,7 @@ const CreateParada = () => {
                     e.latlng.lng,
                 ])
                 map.flyTo(e.latlng, map.getZoom())
+                getEndereco(e.latlng.lat, e.latlng.lng)
             }
         })
     
@@ -57,18 +83,25 @@ const CreateParada = () => {
 
     async function handleSubmit(){
         const [latitude, longitude] = AreaSelecionada;
+        const rua = ruas?.address.road
 
         const data = {
             longitude,
-            latitude
+            latitude,
+            rua
         }
 
-        console.log(data);
+        try {
+            console.log(data);
 
-        await api.post('parada', data);
+            await api.post('parada', data);
 
-        alert('Parada cadastrada')
-        history.push('/')
+            alert('Parada cadastrada')
+
+            history.push('/')
+        }catch(erro) {
+            alert(erro)
+        }
     }
 
     return (

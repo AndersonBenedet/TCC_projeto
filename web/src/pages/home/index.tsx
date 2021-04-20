@@ -16,6 +16,29 @@ interface ParadaLinha {
         Linha: Linha[]
 }
 
+interface PopupParadaProps {
+    paradaId: number,
+    linhas: Linha[]
+}
+
+const PopupParada = ({linhas, paradaId} : PopupParadaProps) => {
+    if (linhas.length <= 0) {
+        return <Popup>Sem linha cadastrada para esta rua</Popup>
+    }
+
+    return (
+        <Popup>
+            {linhas.map(Linha => (
+                    <div key={Linha.id}>
+                        <a href={"linha/"+Linha.id+"/"+paradaId}>{Linha.Numero + ':' + Linha.Nome + " 46" }</a>
+                        <br />
+                    </div>
+                )
+            )}
+        </Popup>
+    )
+}
+
 const Home = () => {
     const [error, setError] = useState();
     const [paradasLinhas, setParadasLinhas] = useState<ParadaLinha[]> ();
@@ -47,15 +70,7 @@ const Home = () => {
                 <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"/>
                 {paradasLinhas?.map(Parada => (
                         <Marker key={Parada.id} position={[Parada.latitude, Parada.longitude]}>
-                            <Popup>
-                                {Parada.Linha.map(Linha => (
-                                        <div key={Linha.id}>
-                                            <a href={"linha/"+Linha.id+"/"+Parada.id}>{Linha.Numero + ':' + Linha.Nome + " 46" }</a>
-                                            <br />
-                                        </div>
-                                    )
-                                )}
-                            </Popup>
+                           <PopupParada linhas={Parada.Linha} paradaId={Parada.id}></PopupParada>
                         </Marker>   
                     ))}
 

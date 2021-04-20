@@ -10,10 +10,20 @@
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
     integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
     crossorigin=""/>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU"
+ crossorigin="anonymous">
 
     <style>
       #mapa { height: 300px;
-              width: 300px; }
+              width: 300px; }  
+        
+      .leaflet-div-icon {
+          background: transparent;
+          border: none;
+      }
+
+      .fa-map-marker-alt#Inicial { color: green; bottom: 30px; right: 5px; position:relative; } 
+      .fa-map-marker-alt#Final { color: red; } 
     </style>
 
   </head>

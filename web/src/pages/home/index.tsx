@@ -2,46 +2,40 @@ import React, {useEffect, useState} from 'react';
 import { MapContainer, TileLayer, Marker, useMapEvents, Popup } from 'react-leaflet';
 import api from '../../services/api';
 
-interface Parada{
-    id: number,
-    latitude: number,
-    longitude: number,
-    rua: string
+interface Linha {
+    id: number;
+    Nome: string;
+    Numero: number;
+    Rua: string;
 }
 
-interface linhas{
-    Nome: string,
-    Numero: number,
-    Rua: string,
-    id: number
+interface ParadaLinha {
+        id: number,
+        latitude: number,
+        longitude: number,
+        Linha: Linha[]
 }
 
 const Home = () => {
-    const [paradas, setParadas] = useState<Parada[]> ([]);
-    const [linha, setLinha] = useState([]);
     const [error, setError] = useState();
+    const [paradasLinhas, setParadasLinhas] = useState<ParadaLinha[]> ();
 
-    useEffect(() => {
-        api.get('paradaAll').then(response =>{
-            setParadas(response.data.parada);
-        })
-        .catch((err) => {
-          setError(err);
-        })
-    }, [])
-
-    async function BuscaLinhas(rua: string){
+    async function BuscarParadasLinhas(){
         await useEffect(() => {
-            api.get('linhas/' + rua).then(response =>{
-                setLinha(response.data.linhas);
+            api.get('getParadasLinhas').then(response =>{
+                try{
+                    if (response.data.Paradas && response.data.Paradas != undefined) setParadasLinhas(response.data.Paradas.ParadaLinha)
+                }catch(erro){
+                    console.log(erro)
+                }
             })
             .catch((err) => {
-              setError(err);
+            setError(err);
             })
         }, [])
     }
 
-    BuscaLinhas('Rua Visconde de Cairu');
+    BuscarParadasLinhas();
 
     return (
         <div id="Home">
@@ -50,24 +44,23 @@ const Home = () => {
             </a>
 
             <MapContainer id="mapa" center={[-28.6800736, -49.3700013]} zoom={16}>
-                <TileLayer
-                    url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                />
-
-                 {paradas.map((item: Parada) => (
-                    <Marker key={item.id} position={[item.latitude, item.longitude]} >
-                        <Popup>
-                            {linha.map((li: linhas) => (
-                                <div key={li.id} >
-                                    <a href={"linha/"+li.Rua}>{li.Numero}</a>
-                                    <br />
-                                </div>
-                            ))}
-                        </Popup>
-                    </Marker>
-                 ))}
+                <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"/>
+                {paradasLinhas?.map(Parada => (
+                        <Marker key={Parada.id} position={[Parada.latitude, Parada.longitude]}>
+                            <Popup>
+                                {Parada.Linha.map(Linha => (
+                                        <div key={Linha.id}>
+                                            <a href={"linha/"+Linha.id+"/"+Parada.id}>{Linha.Numero + ':' + Linha.Nome + " 46" }</a>
+                                            <br />
+                                        </div>
+                                    )
+                                )}
+                            </Popup>
+                        </Marker>   
+                    ))}
 
             </MapContainer>
+
         </div>
     )
 }

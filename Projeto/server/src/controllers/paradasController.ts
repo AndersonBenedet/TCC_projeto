@@ -1,6 +1,13 @@
 import {Request, Response} from 'express';
 import knex from '../database/conection';
 
+interface Linha{
+    nome: string,
+    numero: number,
+    rua: string,
+    id: number
+}
+
 class paradasController {
     async create (request: Request, response: Response) {
         const {
@@ -43,7 +50,37 @@ class paradasController {
             return response.status(400).json({ message: 'parada não encontrado'})
         }
 
-        return response.json({parada});
+        return response.json({ parada });
+    }
+
+    async getParadasLinhas (request: Request, response: Response) {
+        const parada = await knex('parada');
+
+        if (!parada){
+            return response.status(400).json({ message: 'parada não encontrado'})
+        }
+
+        const linha = await knex('linha');
+
+        if (!linha){
+            return response.status(400).json({ message: 'linha não encontrado'})
+        }
+
+        var Paradas = 
+            {
+                ParadaLinha: 
+                parada.map(itemParada => (
+                    {
+                        id: itemParada.id,
+                        latitude: itemParada.latitude,
+                        longitude: itemParada.longitude,
+                        Linha:
+                        linha.filter(itemLinha => itemLinha.Rua === itemParada.rua)
+                    }
+                ))
+            };
+
+        return response.json({ Paradas });
     }
 
     async index (request: Request, response: Response) {

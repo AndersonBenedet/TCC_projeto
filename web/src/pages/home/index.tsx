@@ -30,7 +30,7 @@ const PopupParada = ({linhas, paradaId} : PopupParadaProps) => {
         <Popup>
             {linhas.map(Linha => (
                     <div key={Linha.id}>
-                        <a href={"linha/"+Linha.id+"/"+paradaId}>{Linha.Numero + ':' + Linha.Nome + " 46" }</a>
+                        <a href={"linha/"+Linha.id+"/"+paradaId}>{Linha.Numero + ':' + Linha.Nome }</a>
                         <br />
                     </div>
                 )

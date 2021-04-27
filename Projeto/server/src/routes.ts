@@ -2,22 +2,27 @@ import express from 'express';
 
 import paradasController from './controllers/paradasController'
 import linhasController from './controllers/linhasController'
+import paradasLinhasController from './controllers/paradaLinhasController'
 
 const routes = express.Router();
 const paradascontroller = new paradasController();
 const linhascontroller = new linhasController();
+const paradaslinhascontroller = new paradasLinhasController();
 
-routes.get('/', (request, response) => {
-    return response.json({message: 'hello world'})
-})
-
+//Linhas
 routes.get('/linhas', linhascontroller.index);
 routes.get('/linhas/:rua', linhascontroller.buscarRua);
 routes.get('/linhas-id/:id', linhascontroller.show);
+
+//Paradas
 routes.post('/parada', paradascontroller.create);
 routes.post('/parada', paradascontroller.index);
 routes.get('/parada/:id', paradascontroller.show);
 routes.get('/paradaAll', paradascontroller.getAll);
+
+//Paradas/Linhas
 routes.get('/getParadasLinhas', paradascontroller.getParadasLinhas);
+routes.post('/subir', paradaslinhascontroller.subir);
+
 
 export default routes;

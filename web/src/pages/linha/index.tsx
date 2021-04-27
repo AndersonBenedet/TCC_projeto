@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import { MapContainer, TileLayer, Marker, useMapEvents, Popup } from 'react-leaflet';
 import api from '../../services/api';
+import { useHistory } from 'react-router-dom';
 import { renderToStaticMarkup } from 'react-dom/server';
 import * as L from 'leaflet';
 
@@ -44,6 +45,26 @@ const Linha = (Objeto: any) => {
         html: iconMarkupFinal,
     });
 
+    async function handleClick(e: any, linhaId: number, paradaId: number) {
+        e.preventDefault();
+
+        const data = {
+            linhaId,
+            paradaId
+        }
+
+        try {
+            console.log(data);
+
+            await api.post('/subir/', data);
+
+            alert('Checkin Feito com sucesso')
+
+        }catch(erro) {
+            alert(erro)
+        }
+    }
+
     return (
         
         <div id="linha">
@@ -65,7 +86,7 @@ const Linha = (Objeto: any) => {
                         return (
                         <Marker key={parada.id} position={[parada.latitude, parada.longitude]}>                         
                             <Popup>
-                                <a href={"/rastrear/" + id_parada_inicial + "/" + parada.id + "/" + linha.id}>
+                                <a onClick={(e) => handleClick(e, linha.id, id_parada_inicial)}>
                                     <button>Deseja Descer nesta parada ?</button>
                                 </a>
                             </Popup>

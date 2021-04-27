@@ -23,26 +23,16 @@ interface Adress{
 
 const CreateParada = () => {
     const [AreaSelecionada, setAreaSelecionada] = useState<[number, number]>([0, 0]);
-    const [AreaInicial, setAreaInicial] = useState<[number, number]>([0, 0]);
     const [paradas, setParadas] = useState<Parada[]> ([]);
-    const [error, setError] = useState();
     const [ruas, setRuas] = useState<Adress> ();
     const history = useHistory();
     
-    useEffect(() => {
-        navigator.geolocation.getCurrentPosition(position => {
-            const {latitude, longitude} = position.coords;
-
-            setAreaInicial([latitude, longitude])
-        })
-    }, [])
-
     useEffect(() => {
         api.get('paradaAll').then(response =>{
             setParadas(response.data.parada);
         })
         .catch((err) => {
-          setError(err);
+          console.log(err);
         })
     }, [])
 

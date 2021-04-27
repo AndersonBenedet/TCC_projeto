@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import { MapContainer, TileLayer, Marker, useMapEvents, Popup } from 'react-leaflet';
+import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import api from '../../services/api';
 import { useHistory } from 'react-router-dom';
 import { renderToStaticMarkup } from 'react-dom/server';
@@ -22,8 +22,7 @@ interface Linha {
 
 const Linha = (Objeto: any) => {
     const [linha, setLinha] = useState<Linha> ();
-    const [selectedIndex, setSelectedIndex] = useState(-1);
-    const [customMarkerIconFinalState, setcustomMarkerIconFinalState] = useState()
+    const history = useHistory();
 
     const id_linha = Objeto.match.params.id;
     const id_parada_inicial = Objeto.match.params.parada;
@@ -32,34 +31,32 @@ const Linha = (Objeto: any) => {
         api.get('linhas-id/' + id_linha).then(response =>{
             setLinha(response.data.Linhas.Linha);
         })
-    }, [])
+    }, [id_linha])
 
     const iconMarkupInicial = renderToStaticMarkup(<i id="Inicial" className="fas fa-map-marker-alt fa-3x" />);
-    const iconMarkupFinal = renderToStaticMarkup(<i id="Final" className="fas fa-map-marker-alt fa-2x" />);
     
     const customMarkerIconInicial = L.divIcon({
         html: iconMarkupInicial,
     });
 
-    const customMarkerIconFinal = L.divIcon({
-        html: iconMarkupFinal,
-    });
-
     async function handleClick(e: any, linhaId: number, paradaId: number) {
         e.preventDefault();
 
-        const data = {
-            linhaId,
-            paradaId
+        const dataSubir = {
+            linhaId: linhaId,
+            paradaId: id_parada_inicial
+        }
+
+        const dataDescer = {
+            linhaId: linhaId,
+            paradaId: paradaId
         }
 
         try {
-            console.log(data);
+            var subir = await api.post('/subir/', dataSubir);
+            var descer = await api.post('/descer/', dataDescer);
 
-            await api.post('/subir/', data);
-
-            alert('Checkin Feito com sucesso')
-
+            history.push('/rastrear/'+linhaId+"/"+subir.data.id+"/"+descer.data.id)
         }catch(erro) {
             alert(erro)
         }
@@ -74,7 +71,7 @@ const Linha = (Objeto: any) => {
             <MapContainer id="mapa" center={[-28.6800736, -49.3700013]} zoom={16}>
                 <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"/>
                 {linha?.Paradas.map(parada => {
-                    if (parada.id == id_parada_inicial) {
+                    if (parada.id === id_parada_inicial) {
                         return (
                             <Marker key={parada.id} position={[parada.latitude, parada.longitude]} icon={customMarkerIconInicial}>
                                 <Popup>
@@ -86,9 +83,7 @@ const Linha = (Objeto: any) => {
                         return (
                         <Marker key={parada.id} position={[parada.latitude, parada.longitude]}>                         
                             <Popup>
-                                <a onClick={(e) => handleClick(e, linha.id, id_parada_inicial)}>
-                                    <button>Deseja Descer nesta parada ?</button>
-                                </a>
+                                <button onClick={(e) => handleClick(e, linha.id, parada.id)}>Deseja Descer nesta parada ?</button>
                             </Popup>
                         </Marker>
                     )}

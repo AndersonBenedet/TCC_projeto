@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import { MapContainer, TileLayer, Marker, useMapEvents, Popup } from 'react-leaflet';
+import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import api from '../../services/api';
 
 interface Linha {
@@ -40,20 +40,19 @@ const PopupParada = ({linhas, paradaId} : PopupParadaProps) => {
 }
 
 const Home = () => {
-    const [error, setError] = useState();
     const [paradasLinhas, setParadasLinhas] = useState<ParadaLinha[]> ();
 
     async function BuscarParadasLinhas(){
         await useEffect(() => {
             api.get('getParadasLinhas').then(response =>{
                 try{
-                    if (response.data.Paradas && response.data.Paradas != undefined) setParadasLinhas(response.data.Paradas.ParadaLinha)
+                    if (response.data.Paradas && response.data.Paradas !== undefined) setParadasLinhas(response.data.Paradas.ParadaLinha)
                 }catch(erro){
                     console.log(erro)
                 }
             })
             .catch((err) => {
-            setError(err);
+                console.log(err);
             })
         }, [])
     }

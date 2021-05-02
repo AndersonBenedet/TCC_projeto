@@ -22,12 +22,15 @@ routes.get('/paradaAll', paradascontroller.getAll);
 
 //Paradas/Linhas
 routes.get('/getParadasLinhas', paradascontroller.getParadasLinhas);
-routes.get('/buscar/:id_paradalinha', paradaslinhascontroller.buscar);
-routes.post('/subir', paradaslinhascontroller.subir);
-routes.post('/descer', paradaslinhascontroller.descer);
+routes.get('/buscar/:id_linha', paradaslinhascontroller.buscar);
+//routes.post('/subir', paradaslinhascontroller.subir);
+//routes.post('/descer', paradaslinhascontroller.descer);
+routes.post('/controle', paradaslinhascontroller.quantidade_controle);
 
 
 routes.post('/limpar', paradaslinhascontroller.limpar);
 
+//Nao Usar em funções
+routes.post('/criar_linha_parada', paradaslinhascontroller.criar);
 
 export default routes;

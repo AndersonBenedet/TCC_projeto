@@ -14,6 +14,11 @@ const paradaslinhascontroller = new paradasLinhasController();
 const usuariocontroller = new UsuarioController();
 const motoristacontroller = new motoristaController();
 
+const app = express();
+const io = app.get('socket')
+
+console.log(io)
+
 //Linhas
 routes.get('/linhas', linhascontroller.index);
 routes.get('/linhasAll', linhascontroller.getAll);

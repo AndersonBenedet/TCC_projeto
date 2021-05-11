@@ -128,6 +128,14 @@ class ControleParadasLinhas extends paradasLinhasController{
 
         var linha_parada = await knex('linhas_paradas_ordem').where('linha_id', linhaId).whereBetween('ordem', [linha_parada_subir.ordem, linha_parada_descer.ordem]).select('*');
 
+        try{
+            const io = request.app.get('socket')
+
+            io.emit('atualiza-info')
+        }catch(er){
+            console.log(er)
+        }
+
         return response.json({
             paradaLinhaInicial: linha_parada_subir.parada_id, 
             paradaLinhaFinal: linha_parada_descer.parada_id

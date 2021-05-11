@@ -10,6 +10,7 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
+import { getToken } from "../../services/auth";
 
 interface Parada {
     id: number;
@@ -107,7 +108,7 @@ const Linha = (Objeto: any) => {
                 fullWidth={true}
             >
                 
-                    <DialogTitle id="alert-dialog-title"> Ola: {"Usuario"} </DialogTitle>
+                    <DialogTitle id="alert-dialog-title"> Ola: {getToken()} </DialogTitle>
                     <DialogContent>
                         <DialogContentText id="alert-dialog-description">
                             Sua Viagem: <br />

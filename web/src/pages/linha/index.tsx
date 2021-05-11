@@ -46,9 +46,11 @@ const Linha = (Objeto: any) => {
         html: iconMarkupInicial,
     });
 
-    async function handleClick(e: any, paradaId: number) {
+    function handleClick(e: any, paradaId: number) {
         e.preventDefault();
+
         setparadaFinal(paradaId)
+
         handleClickOpen();
     };
 
@@ -64,7 +66,6 @@ const Linha = (Objeto: any) => {
         }
 
         try{
-
             var controle = await api.post('/controle/', data);
 
             history.push('/rastrear/'+linha?.id+"/"+controle.data.paradaLinhaInicial+"/"+controle.data.paradaLinhaFinal)

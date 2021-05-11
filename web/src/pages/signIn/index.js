@@ -14,19 +14,23 @@ class SignIn extends Component {
 
   handleSignIn = async e => {
     e.preventDefault();
-    const { password } = this.state;
-    if ( !password) {
-      this.setState({ error: "Preencha senha para continuar!" });
+    const { usuario, password } = this.state;
+    if ( !usuario) {
+      this.setState({ error: "Preencha o usuario para continuar!" });
     } else {
-      try {
-        const response = await api.post("/sessions", { password });
-        login(response.data.token);
-        this.props.history.push("/app");
-      } catch (err) {
-        this.setState({
-          error:
-            "Houve um problema com o login, verifique suas credenciais. T.T"
-        });
+      if (!password) {
+        this.setState({ error: "Preencha senha para continuar!" });
+      } else {
+        try {
+          const response = await api.post("/sessions", { usuario, password });
+          login(response.data.login);
+          this.props.history.push("/Home");
+        } catch (err) {
+          this.setState({
+            error:
+              "Houve um problema com o login, verifique suas credenciais."
+          });
+        }
       }
     }
   };
@@ -36,6 +40,11 @@ class SignIn extends Component {
       <Container>
         <Form onSubmit={this.handleSignIn}>
           {this.state.error && <p>{this.state.error}</p>}
+          <input
+            type="text"
+            placeholder="Usuario"
+            onChange={e => this.setState({ usuario: e.target.value })}
+          />
           <input
             type="password"
             placeholder="Senha"

@@ -6,7 +6,7 @@ export async function up(knex: Knex) {
         table.increments('id').primary();
         table.string('login').notNullable();
         table.string('senha').notNullable();
-        table.integer('nivel').notNullable();
+        table.integer('nivel').notNullable().defaultTo(0);
     })
 }
 

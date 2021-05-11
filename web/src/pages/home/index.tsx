@@ -64,6 +64,10 @@ const Home = () => {
             <a href="/create-parada">
                 Criar parada
             </a>
+            <br />
+            <a href="/cadastro-motorista">
+                Criar Motorista
+            </a>
 
             <MapContainer id="mapa" center={[-28.6800736, -49.3700013]} zoom={16}>
                 <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"/>

@@ -29,63 +29,6 @@ class paradasLinhasController {
 }
 
 class ControleParadasLinhas extends paradasLinhasController{
-    /*
-    async subir (request: Request, response: Response) {
-        const { linhaId, paradaId } = request.body;
-
-        var linha_parada = await knex('linhas_paradas_ordem').where('linha_id', linhaId).where('parada_id', paradaId).select('*').first();
-
-        if (!linha_parada){
-            try {
-                linha_parada = await super.create(request)
-            }catch(error){
-                console.log(error)
-            }
-            
-            if (!linha_parada) return response.status(400).json({ message: 'Não foi possivel criar linha/parada'})
-        }
-
-        const trx = await knex.transaction();
-    
-        linha_parada.subir += 1
-
-        await trx('linhas_paradas_ordem').update({
-            subir: linha_parada.subir
-        }).where('id', linha_parada.id);
-
-        await trx.commit();
-
-        return response.json(linha_parada);
-    }
-
-    async descer (request: Request, response: Response) {
-        const { linhaId, paradaId } = request.body;
-
-        var linha_parada = await knex('linhas_paradas_ordem').where('linha_id', linhaId).where('parada_id', paradaId).select('*').first();
-
-        if (!linha_parada){
-            try {
-                linha_parada = await super.create(request)
-            }catch(error){
-                console.log(error)
-            }
-            
-            if (!linha_parada) return response.status(400).json({ message: 'Não foi possivel criar linha/parada'})
-        }
-
-        const trx = await knex.transaction();
-    
-        linha_parada.descer += 1
-
-        await trx('linhas_paradas_ordem').update({
-            descer: linha_parada.descer
-        }).where('id', linha_parada.id);
-
-        await trx.commit();
-
-        return response.json(linha_parada);
-    }*/
-
     async criar (request: Request, response: Response) {
         const { linhaId, paradaId } = request.body;
 

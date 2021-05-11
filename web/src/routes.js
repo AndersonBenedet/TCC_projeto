@@ -6,6 +6,7 @@ import rastrear from './pages/rastrear';
 import SignUp from "./pages/signUp";
 import SignIn from "./pages/signIn";
 import Home from './pages/home';
+import Motorista from './pages/createMotorista';
 import { isAuthenticated } from "./services/auth";
 
 
@@ -23,16 +24,16 @@ const PrivateRoute = ({ component: Component, ...rest }) => (
   );
 
 const Routes = () => {
-    return (
+     return (
         <BrowserRouter>
             <Switch>
-                <Route exact path="/signin" component={SignIn} />
+                <Route exact path="/" component={SignIn} />
                 <Route path="/signup" component={SignUp} />
-                <PrivateRoute path="/app" component={() => <h1>App</h1>} />
-                <Route component={ Home } path='/' exact />
-                <Route component={ createParada } path='/create-parada' exact />
-                <Route component={ linha } path='/linha/:id/:parada' />
-                <Route component={ rastrear } path='/rastrear/:id_linha/:id_paradaLinha_inicial/:id_paradaLinha_final' />
+                <PrivateRoute component={ Home } path='/Home' exact />
+                <PrivateRoute component={ createParada } path='/create-parada' exact />
+                <PrivateRoute component={ linha } path='/linha/:id/:parada' />
+                <PrivateRoute component={ rastrear } path='/rastrear/:id_linha/:id_paradaLinha_inicial/:id_paradaLinha_final' />
+                <PrivateRoute component={ Motorista } path='/cadastro-motorista' exact />
                 <Route path="*" component={() => <h1>Page not found</h1>} />
             </Switch>
         </BrowserRouter>
